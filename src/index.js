@@ -8,6 +8,7 @@ app.use(bodyParser.json());
 
 
 mongoose.connect("mongodb+srv://IndrashishRoy:windows10@radon-cohort-cluster.gtmdsvp.mongodb.net/group29Database?retryWrites=true&w=majority", {useNewUrlParser: true})
+
 .then( () => console.log("MongoDb is connected"))
 .catch ( err => console.log(err) )
 
