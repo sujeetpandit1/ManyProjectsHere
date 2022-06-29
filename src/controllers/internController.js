@@ -8,10 +8,6 @@ const createIntern= async function(req,res){
 
         let data=req.body;
         let college= await collegeModel.findOne({name:data.collegeName}).select({_id:1})
-        console.log(college)
-        // collegeId=college._id.toString()
-        collegeId=college
-        console.log(collegeId)
         delete data.collegeName
         data.collegeId=college._id
         let savedData=await internModel.create(data)

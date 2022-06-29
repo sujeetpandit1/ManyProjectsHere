@@ -22,7 +22,7 @@ const collegeValidation=async function(req,res,next){
     if(!validateBody(data))return res.status(400).send({status:false, msg: "Body cannot be empty"})
 
     if(!validateData(data.name))return res.status(400).send({status:false, msg: "Enter a valid name"})
-    if(!/^[a-z]*$/.test(data.name))return res.status(400).send({status:false, msg: "name should be in lower case"})
+    if(!/^[a-z\s]*$/.test(data.name))return res.status(400).send({status:false, msg: "name should be in lower case"})
 
     if(!validateData(data.fullName))return res.status(400).send({status:false, msg: "Enter a valid fullName"})
 
