@@ -7,7 +7,7 @@ const internModel = new mongoose.Schema(
     email: { type: String, required: true, trim: true,unique:true },
     mobile: { type: Number, required: true, unique:true },
     collegeId: { type: ObjectId, ref:"college" },
-    isDeleted:{type:Boolean,default:false,trim:true}
+    isDeleted:{type:Boolean,default:false}
   },
   { timestamps: true }
 );
