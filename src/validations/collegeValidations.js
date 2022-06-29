@@ -1,5 +1,7 @@
 const collegeModel = require("../models/collegeModel");
 
+
+// validation for college details
 const validateData = function (value) {
   try {
     if (typeof value === "undefined" || typeof value === null) return false;
@@ -26,7 +28,7 @@ const collegeValidation = async function (req, res, next) {
 
     if (!validateData(data.name))
       return res.status(400).send({ status: false, msg: "Enter a valid name" });
-    if (!/^[a-z\s]*$/.test(data.name))
+    if (!/^[a-z\s]*$/.test(data.name.trim()))
       return res
         .status(400)
         .send({ status: false, msg: "name should be in lower case" });
@@ -38,10 +40,10 @@ const collegeValidation = async function (req, res, next) {
 
     if (
       !/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(
-        data.logoLink
+        data.logoLink.trim()
       )
     )
-      return res.status(400).send({ status: false, msg: "Enter a valid URL" });
+      return res.status(400).send({ status: false, msg: "Enter a valid logo URL" });
 
     let duplicatename = await collegeModel.find({ name: data.name });
     if (duplicatename.length != 0)

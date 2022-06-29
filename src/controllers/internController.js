@@ -7,7 +7,7 @@ const createIntern= async function(req,res){
     try{
 
         let data=req.body;
-        let college= await collegeModel.findOne({name:data.collegeName}).select({_id:1})
+        let college= await collegeModel.findOne({name:data.collegeName, isDeleted:false}).select({_id:1})
         if(!college)return res.status(404).send({status:false,msg:`No college name found with ${data.collegeName}`})
         data.collegeId=college._id
         delete data.collegeName
