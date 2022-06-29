@@ -8,9 +8,11 @@ router.post('/functionup/colleges', collegeValidation, collegeController.createC
 
 router.post('/functionup/interns',internController.createIntern )
 
-router.get("/test",function(req,res){
-    res.send("Project-2 has started !!!")
-})
+router.get('/functionup/collegeDetails',collegeController.getCollege)
+
+// router.get("/test",function(req,res){
+//     res.send("Project-2 has started !!!")
+// })
 
 
 
