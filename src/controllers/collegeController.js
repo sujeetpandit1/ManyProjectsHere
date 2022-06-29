@@ -16,7 +16,7 @@ const getCollege = async function (req, res) {
   try {
     let collegeName = req.query.collegeName;
 
-  //validation start
+    //validation start
     if(!collegeName)return res.status(400).send({status:false,msg:`Please enter collegeName in query`})
     let thisCollege = await collegeModel.findOne({name: collegeName,isDeleted:false }).select({ name: 1, fullName: 1, logoLink: 1, _id: 1 });
     if(!thisCollege)return res.status(404).send({status:false,msg:`No college with name ${collegeName} found `})

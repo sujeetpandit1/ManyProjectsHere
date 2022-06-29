@@ -3,14 +3,11 @@ const collegeModel = require("../models/collegeModel");
 
 // validation for college details
 const validateData = function (value) {
-  try {
+  
     if (typeof value === "undefined" || typeof value === null) return false;
     if (!/^[a-zA-Z ._-]*$/.test(value)) return false;
     if (typeof value !== "string" || value.trim().length == 0) return false;
-    return true;
-  } catch (error) {
-    res.status(500).send({ status: false, msg: error.message });
-  }
+    return true;  
 };
 const validateBody = function (requestBody) {
   if (!requestBody) return false;
@@ -43,6 +40,7 @@ const collegeValidation = async function (req, res, next) {
         data.logoLink.trim()
       )
     )
+    // ^(?:www\.|(https:|http:)+\/\/)+[a-zA-z0-9]+\.[a-z]+\/[a-z]+\.(?:png|jpg|jpeg)
       return res.status(400).send({ status: false, msg: "Enter a valid logo URL" });
 
     let duplicatename = await collegeModel.find({ name: data.name });

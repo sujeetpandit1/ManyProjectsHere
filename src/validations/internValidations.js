@@ -26,7 +26,7 @@ const internValidations = async function (req, res, next) {
         return res
             .status(400)
             .send({ status: false, msg: "Please enter email as a string" });
-    if (!/^([0-9a-zA-Z]([-_\\.]*[0-9a-zA-Z]+)*)@([a-zA-Z]([-_\\.]*[a-zA-Z]+)*)[\\.]([a-zA-Z]{2,9})+$/.test(data.email.trim()))
+    if (!/^([0-9a-zA-Z]([-_\\.]*[0-9a-zA-Z]+)*)@([a-zA-Z]([-_\\.]*[a-zA-Z]+)*)[\\.]([a-zA-Z]{2,9})+$/.test(data.email.trim()))//only lowercase
         return res
             .status(400)
             .send({ status: false, msg: `${data.email} is not a valid email` });
