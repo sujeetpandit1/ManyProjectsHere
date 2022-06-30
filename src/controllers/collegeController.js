@@ -26,7 +26,13 @@ const getCollege = async function (req, res) {
 
     let internsofCollege = await internModel.find({ isDeleted: false, collegeId: thisCollege._id }).select({ name: 1, email: 1, mobile: 1 });
 
-    if (internsofCollege.length == 0) return res.status(404).send({ status: false, msg: `No interns found under college name ${collegeName}` })
+    if (internsofCollege.length == 0)
+    { 
+      thisCollege._doc.interns = "No interns have applied to this college";  
+      delete thisCollege._doc._id;    
+      return res.status(200).send({ status: true, data:thisCollege})
+    }
+
     let interns = [];
     
     for (let i = 0; i < internsofCollege.length; i++) {
