@@ -1,5 +1,5 @@
 const internModel = require("../models/internModel");
-const collegeModel = require("../models/collegeModel");
+
 const { validateBody, validateData } = require("./collegeValidations");
 
 const isValidKey = function (value) {
@@ -9,16 +9,20 @@ const isValidKey = function (value) {
 
 const internValidations = async function (req, res, next) {
    try {let data = req.body;
+
     //Validating empty body
     if (!validateBody(data))
         return res.status(400).send({ status: false, msg: "Body cannot be empty" });
+
     //validating name is entered and valid
     if (!isValidKey(data.name))
         return res.status(400).send({ status: false, msg: "Please enter name" });
+
     if (!validateData(data.name))
         return res
             .status(400)
             .send({ status: false, msg: `${data.name} is not a valid name` });
+
     //validating email is unique and valid
     if (!isValidKey(data.email))
         return res.status(400).send({ status: false, msg: "Please enter email" });
@@ -26,7 +30,7 @@ const internValidations = async function (req, res, next) {
         return res
             .status(400)
             .send({ status: false, msg: "Please enter email as a string" });
-    if (!/^([0-9a-zA-Z]([-_\\.]*[0-9a-zA-Z]+)*)@([a-zA-Z]([-_\\.]*[a-zA-Z]+)*)[\\.]([a-zA-Z]{2,9})+$/.test(data.email.trim()))
+    if (!/^([0-9a-z]([-_\\.]*[0-9a-z]+)*)@([a-z]([-_\\.]*[a-z]+)*)[\\.]([a-z]{2,9})+$/.test(data.email.trim()))
         return res
             .status(400)
             .send({ status: false, msg: `${data.email} is not a valid email` });
@@ -35,6 +39,7 @@ const internValidations = async function (req, res, next) {
         return res
             .status(400)
             .send({ status: false, msg: `${data.email} is already registered` });
+
     //Validiating mobile number
     if (!isValidKey(data.mobile))
         return res
@@ -56,6 +61,7 @@ const internValidations = async function (req, res, next) {
         return res
             .status(400)
             .send({ status: false, msg: `${data.mobile} is already registered` });
+
     //Validating isDeleted
     if (data.isDeleted) {
         if (typeof data.isDeleted !== "boolean")
@@ -66,6 +72,7 @@ const internValidations = async function (req, res, next) {
                     msg: "Please enter true or false in Boolean only",
                 });
     }
+    
     //Validating collegeName
     if (!isValidKey(data.collegeName))
         return res
