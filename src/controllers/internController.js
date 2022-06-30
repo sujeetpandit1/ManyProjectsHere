@@ -1,8 +1,6 @@
 const internModel= require("../models/internModel")
 const collegeModel=require('../models/collegeModel')
 
-
-
 const createIntern= async function(req,res){
     try{
 
@@ -19,7 +17,6 @@ const createIntern= async function(req,res){
         let savedData=await internModel.create(data)
 
         res.status(201).send({status:true, data: savedData})
-
 
     }catch(error){
 
