@@ -2,7 +2,7 @@ const internModel = require("../models/internModel");
 const {validateBody,validateData,isValidKey,} = require("./collegeValidations");
 
 const internValidations = async function (req, res, next) {
-  try {
+
     let data = req.body;
 
     //Validating empty body
@@ -82,10 +82,7 @@ const internValidations = async function (req, res, next) {
         .send({ status: false, msg: "collegeName should be in lower case" });
 
     next();
-    
-  } catch (error) {
-    res.status(500).send({ status: false, msg: error.message });
-  }
+  
 };
 
 module.exports = { internValidations };

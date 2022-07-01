@@ -18,7 +18,6 @@ const isValidKey = function (value) {
 };
 
 const collegeValidation = async function (req, res, next) {
-  try {
     let data = req.body;
 
     // Validating empty body
@@ -36,7 +35,7 @@ const collegeValidation = async function (req, res, next) {
       return res
         .status(400)
         .send({ status: false, msg: "name should be in lower case" });
-    let duplicatename = await collegeModel.find({ name: data.name });
+    let duplicatename = await collegeModel.find({ name: data.name }); 
     if (duplicatename.length != 0)
       return res
         .status(400)
@@ -71,9 +70,6 @@ const collegeValidation = async function (req, res, next) {
         });
     }
     next();
-  } catch (error) {
-    res.status(500).send({ status: false, msg: error.message });
-  }
 };
 
 module.exports = { collegeValidation, validateData, validateBody, isValidKey };
