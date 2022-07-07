@@ -57,14 +57,13 @@ const bookvalidation = async function (req, res, next) {
             return res.status(400).send({ status: false, msg: " enter valid category in alphabets only" });
         }
 
-        //validating subCategory is entered and valid
-        if (typeof data.subcategory === "undefined" || data.subcategory === null)
-            return res.status(400).send({ status: false, msg: `${data.subcategory} is not a valid subcategory` })
-        if (data.subcategory.length == 0) {
-            return res.status(400).send({ status: false, msg: "subcategory is not valid" });
-        }
-        // if(typeof data.subcategory !=="object")
-        // return res.status(400).send({status:false,msg:"give subcategory in array only"})
+    //validating subCategory is entered and valid
+    if (typeof data.subcategory === "undefined" || data.subcategory === null)
+        return res.status(400).send({ status: false, msg: `${data.subcategory} is not a valid subcategory` })
+    if (data.subcategory.length == 0) {
+        return res.status(400).send({ status: false, msg: "subcategory is not valid" });
+    }
+
 
         if (data.subcategory) {
             for (let i = 0; i < data.subcategory.length; i++) {

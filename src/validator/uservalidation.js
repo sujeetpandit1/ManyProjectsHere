@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const {isValidRequestBody, isValidObjectId, isValidData} = require("../validator/validation")
+const { isValidRequestBody, isValidObjectId, isValidData } = require("../validator/validation")
+// const validate = require("../validator/validation")
 
 
 
@@ -135,12 +136,32 @@ const checkLogin = function (req, res, next) {
             }
 
 
-            const result = verifyPassword(password)
-            if (result != true) {
-                return res.status(400).send({ status: false, message: result })
-            }
-            
-    //if all validations are correct then go to controller
+        const { email, password } = requestBody
+
+
+        if (!isValidData(email)) {
+            return res.status(400).send({ status: false, msg: "Please provide email" })
+
+        }
+
+
+        if (!isValidData(password)) {
+            return res.status(400).send({ status: false, msg: "Please provide password" })
+
+        }
+
+        if (!verifyEmail(email)) {
+            return res.status(400).send({ status: false, msg: "Email format is invalid" })
+
+        }
+
+
+        const result = verifyPassword(password)
+        if (result != true) {
+            return res.status(400).send({ status: false, message: result })
+        }
+
+        //if all validations are correct then go to controller
         next()
 
     }

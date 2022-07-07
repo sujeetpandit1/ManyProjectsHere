@@ -1,8 +1,7 @@
 const bookModel = require("../models/booksModel")
+const reviewModel = require("../models/reviewModel")
+const { isValidRequestBody, isValidObjectId, isValidData } = require("../validator/validation")
 const validator = require('validator')
-const moment = require('moment')
-const { isValidRequestBody, isValidData, isValidObjectId } = require("../validator/validation.js")
-
 
 const createBook = async function (req, res) {
     try {
@@ -23,7 +22,7 @@ const getBookbyQuerry = async function (req, res) {
         const filter = {}
         filter.isDeleted = false
         if (requestData.category) {
-            if (!validate.isValidData(requestData.category))
+            if (!isValidData(requestData.category))
                 return res.status(400).send({ status: false, message: "please give category properly" })
             else
                 filter.category = requestData.category
@@ -34,7 +33,7 @@ const getBookbyQuerry = async function (req, res) {
             if (requestData.subcategory.length > 0) {
                 let subcateGory = requestData.subcategory
                 for (let i = 0; i < subcateGory.length; i++) {
-                    if (!validate.isValidData(subcateGory[i]))
+                    if (!isValidData (subcateGory[i] ))
                         return res.status(400).send({ status: false, message: "please give proper subcategory in the array" })
                 }
             }
@@ -42,7 +41,7 @@ const getBookbyQuerry = async function (req, res) {
                 filter.subcategory = requestData.subcategory
         }
         if (requestData.userId) {
-            if (!validate.isValidObjectId(requestData.userId))
+            if (!isValidObjectId(requestData.userId))
                 return res.status(400).send({ status: false, message: "please give proper userId" })
             else filter.userId = requestData.userId
 
@@ -61,8 +60,32 @@ const getBookbyQuerry = async function (req, res) {
     }
 }
 
+const bookDetail = async function (req, res) {
+    try {
+      const bookId = req.params.bookId;
+    //   console.log(bookId)
+      if (!isValidObjectId(bookId)) {
+        return res .status(400).send({ status: false, message: " enter valid bookId" });
+      }
 
-// ===================================== PUT /books/:bookId ===================================== 
+      const details = await bookModel.findOne({_id: bookId,isDeleted: false,}).select({ISBN:0,__v:0});
+    //   console.log({...details});
+      if (!details) {
+        return res.status(404).send({ status: false, message: "Detalis  not present with this book" });
+      }
+
+      const reviews =await reviewModel.find({bookId:bookId,isDeleted:false}).select({_id:1,bookId:1,reviewedBy:1,reviewedAt:1,rating:1,review:1});
+
+      if(!reviews){
+        return res.status(404).send({status:false,msg:"Data not present"});
+      }
+        details._doc.reviewsData = reviews
+      res.status(200).send({ status: true, message: 'Books list',data: details })
+    } catch (err) {
+      res.status(500).send({ status: false, data: err.message });
+    }
+}
+    // ===================================== PUT /books/:bookId ===================================== 
 
 
 const updateBook = async function (req, res) {
@@ -71,7 +94,7 @@ const updateBook = async function (req, res) {
         let data = req.body
         let id = req.params
         var details = {}
-
+        console.log(details)
         //validating empty body
         if (!isValidRequestBody(data))
             return res.status(400).send({ status: false, msg: "Body cannot be empty" })
@@ -132,6 +155,7 @@ const updateBook = async function (req, res) {
     } catch (err) {
         res.status(500).send({ status: false, message: err.message })
     }
-}
+};
+ 
 
-module.exports = { getBookbyQuerry, createBook, updateBook }
+module.exports = { getBookbyQuerry, createBook, updateBook,bookDetail }
