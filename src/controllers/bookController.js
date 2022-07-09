@@ -19,37 +19,48 @@ const createBook = async function (req, res) {
 const getBookbyQuerry = async function (req, res) {
     try {
         let requestData = req.query
+                //<-----------------------taking filter for searching------------------>//
         const filter = {}
+
         filter.isDeleted = false
+                   //<---------------check catergory present and (if)proper format or not----------------->//
         if (requestData.category) {
+
             if (!isValidData(requestData.category))
                 return res.status(400).send({ status: false, message: "please give category properly" })
             else
                 filter.category = requestData.category
         }
+                  //<---------------check subcatergory present and (if)proper format or not----------------->//
         if (requestData.subcategory) {
+
             if ((requestData.subcategory.length == 0) || !validate.isValidData(requestData.subcategory))
                 return res.status(400).send({ status: false, message: "please give subcategory properly" })
+
             if (requestData.subcategory.length > 0) {
                 let subcateGory = requestData.subcategory
+
                 for (let i = 0; i < subcateGory.length; i++) {
-                    if (!isValidData (subcateGory[i] ))
+                    if (!isValidData(subcateGory[i]))
                         return res.status(400).send({ status: false, message: "please give proper subcategory in the array" })
                 }
             }
             else
                 filter.subcategory = requestData.subcategory
         }
+                //<---------------check userId present and (if)proper format or not----------------->//
         if (requestData.userId) {
             if (!isValidObjectId(requestData.userId))
                 return res.status(400).send({ status: false, message: "please give proper userId" })
+
             else filter.userId = requestData.userId
 
         }
-
+       //<------------------------------searching book--------------------------->//
         let allBook = await bookModel.find(filter)
             .select({ title: 1, excerpt: 1, userId: 1, category: 1, releasedAt: 1, review: 1 })
             .sort({ title: 1 })
+
         if (allBook.length == 0)
             return res.status(404).send({ status: false, msg: "book not found" })
 
@@ -62,30 +73,30 @@ const getBookbyQuerry = async function (req, res) {
 
 const bookDetail = async function (req, res) {
     try {
-      const bookId = req.params.bookId;
-    //   console.log(bookId)
-      if (!isValidObjectId(bookId)) {
-        return res .status(400).send({ status: false, message: " enter valid bookId" });
-      }
+        const bookId = req.params.bookId;
+        //   console.log(bookId)
+        if (!isValidObjectId(bookId)) {
+            return res.status(400).send({ status: false, message: " enter valid bookId" });
+        }
 
-      const details = await bookModel.findOne({_id: bookId,isDeleted: false,}).select({ISBN:0,__v:0});
-    //   console.log({...details});
-      if (!details) {
-        return res.status(404).send({ status: false, message: "Detalis  not present with this book" });
-      }
+        const details = await bookModel.findOne({ _id: bookId, isDeleted: false, }).select({ ISBN: 0, __v: 0 });
+        //   console.log({...details});
+        if (!details) {
+            return res.status(404).send({ status: false, message: "Detalis  not present with this book" });
+        }
 
-      const reviews =await reviewModel.find({bookId:bookId,isDeleted:false}).select({_id:1,bookId:1,reviewedBy:1,reviewedAt:1,rating:1,review:1});
+        const reviews = await reviewModel.find({ bookId: bookId, isDeleted: false }).select({ _id: 1, bookId: 1, reviewedBy: 1, reviewedAt: 1, rating: 1, review: 1 });
 
-      if(!reviews){
-        return res.status(404).send({status:false,msg:"Data not present"});
-      }
+        if (!reviews) {
+            return res.status(404).send({ status: false, msg: "Data not present" });
+        }
         details._doc.reviewsData = reviews
-      res.status(200).send({ status: true, message: 'Books list',data: details })
+        res.status(200).send({ status: true, message: 'Books list', data: details })
     } catch (err) {
-      res.status(500).send({ status: false, data: err.message });
+        res.status(500).send({ status: false, data: err.message });
     }
 }
-    // ===================================== PUT /books/:bookId ===================================== 
+// ===================================== PUT /books/:bookId ===================================== 
 
 
 const updateBook = async function (req, res) {
@@ -156,6 +167,24 @@ const updateBook = async function (req, res) {
         res.status(500).send({ status: false, message: err.message })
     }
 };
- 
+const deleteBookbyPath = async function (req, res) {
+    try {
+        let bookId = req.params.bookId
+                //<-------------------------find book by book Id---------------------->//
+        let user = await bookModel.findById({ _id: bookId }).select({ _id: 0, userId: 1, isDeleted: 1 })
 
-module.exports = { getBookbyQuerry, createBook, updateBook,bookDetail }
+        if (user.isDeleted == true)
+            return res.status(404).send({ status: false, message: "book not found" })
+
+               //<-----------------------------deleting book------------------------->//
+        let bookData = await bookModel.findByIdAndUpdate({ _id: bookId }, { $set: { isDeleted: true } })
+        
+
+        res.status(200).send({ status: false, message: "book is deleted" })
+    }
+    catch (error) { res.status(500).send({ status: false, message: error.message }) }
+
+}
+
+
+module.exports = { getBookbyQuerry, createBook, updateBook, bookDetail, deleteBookbyPath }

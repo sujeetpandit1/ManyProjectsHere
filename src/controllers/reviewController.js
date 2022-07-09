@@ -1,21 +1,29 @@
-const reviewModel=require("../models/reviewModel")
-const bookModel=require("../models/booksModel")
+const reviewModel = require("../models/reviewModel")
+
+const bookModel = require("../models/booksModel")
 
 
-const createReview= async function(req,res){
-    try{let book=req.params
-        req.body.bookId=book.bookId
-    let requestBody=req.body
-    
-    let bookCheck =await bookModel.findById({_id:book.bookId,isDeleted:false})
-    if(!bookCheck)
-    return res.status(404).send({status:false,message:"book not found"})
-    let bookDetails= await bookModel.findByIdAndUpdate({_id:book.bookId},{$inc:{reviews:1}})
-    console.log(bookDetails)
-    let createReview= await reviewModel.create(requestBody)
-    res.status(201).send({status:true,message:"Sucess",data:createReview})}
-    catch(error){
-        res.status(500).send({status:false,message:error.message})
+const createReview = async function (req, res) {
+    try {
+        let bookID = req.params.bookId
+
+        req.body.bookId = bookID
+
+        let requestBody = req.body
+            //<----------------------checking book is present or not---------------------->//
+        let bookCheck = await bookModel.findById({ _id:bookID, isDeleted: false })
+
+        if (!bookCheck)
+            return res.status(404).send({ status: false, message: "book not found" })
+            //<--------------------------increasing book review count------------------->//
+        let bookDetails = await bookModel.findByIdAndUpdate({ _id:bookID }, { $inc: { reviews: 1 } })
+            //<----------------------------create review--------------------------->//
+        let createReview = await reviewModel.create(requestBody)
+
+        res.status(201).send({ status: true, message: "Sucess", data: createReview })
+    }
+    catch (error) {
+        res.status(500).send({ status: false, message: error.message })
     }
 
 }
@@ -36,4 +44,4 @@ const createReview= async function(req,res){
 
 
 
-module.exports={createReview}
+module.exports = { createReview }

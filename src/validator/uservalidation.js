@@ -116,24 +116,7 @@ const checkLogin = function (req, res, next) {
             }
 
 
-            const {email, password} = requestBody
-            
-
-            if (!isValidData(email)) {
-                return res.status(400).send({ status: false, msg: "Please provide email" })
-    
-            }
-
            
-            if (!isValidData(password)) {
-                return res.status(400).send({ status: false, msg: "Please provide password" })
-    
-            }
-
-            if (!verifyEmail(email)) {
-                return res.status(400).send({ status: false, msg: "Email format is invalid" })
-    
-            }
 
 
         const { email, password } = requestBody
