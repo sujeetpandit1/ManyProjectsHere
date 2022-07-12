@@ -109,7 +109,7 @@ const reviewCheck = function (req, res, next) {
    //============================bookId validation==========================================//
    if (!isValidObjectId(bookId)) {
 
-      return res.status(400).send({ status: false, message: "not a valid bookId" })
+      return res.status(400).send({ status: false, message: `bookId ${bookId} is Invalid BookId`})
    }
 
    if (isDeleted) {

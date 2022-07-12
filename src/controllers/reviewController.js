@@ -7,8 +7,6 @@ const createReview = async function (req, res) {
         let book = req.params
         req.body.bookId = book.bookId
         let requestBody = req.body
-        
-
 
         let bookCheck = await bookModel.findOne({ _id: book.bookId, isDeleted: false })
         if (!bookCheck)
@@ -47,16 +45,11 @@ const updateReview = async function (req, res) {
          return res.status(400).send({ status: false, msg: `reviewId ${reviewId} is Invalid ReviewId` })
 
        
-
-        //validating bookId
-        
-
         let reqBook = await bookModel.findOne({ _id: bookId, isDeleted: false }).select({ ISBN: 0, __v: 0 });
 
 
         if (!reqBook)
             return res.status(404).send({ status: false, msg: "No such Book Exists" })
-
        
 
         let reqReview = await reviewModel.findOne({ _id: reviewId, isDeleted: false })
@@ -137,7 +130,7 @@ const deleteReview = async function (req, res) {
         let { bookId, reviewId } = req.params
 
         if (!isValidObjectId(bookId))
-            return res.status(400).send({ status: false, msg: `bookId ${id.bookId} is Invalid BookId` })
+            return res.status(400).send({ status: false, msg: `bookId ${bookId} is Invalid BookId` })
 
         let reqBook = await bookModel.findOne({ _id: bookId, isDeleted: false });
 
