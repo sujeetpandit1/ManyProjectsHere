@@ -1,5 +1,4 @@
-const { isValidData, isValidRequestBody, isValidObjectId } = require("./validation")
-
+const { isValidRequestBody, isValidObjectId, isValidData } = require("../validator/validation")
 
 
 const ratingCheck = function (value) {
@@ -23,13 +22,21 @@ const reviewCheck = function (req, res, next) {
       return res.status(400).send({ status: false, message: "please give review and details" })
 
 
-   const { reviewedBy, rating, review, reviewedAt, isDeleted} = requestBody
+   const { reviewedBy, rating, review, reviewedAt, isDeleted } = requestBody
 
    // =========check wheather mandatory  fields are present or not=======================//
 
    let missdata = ""
 
-   if (!bookId) {
+   // if (!bookId) {
+   //    missdata = missdata + "bookId"
+   // }
+   // if (!reviewedAt) {
+   //     missdata = missdata + " " + "reviewedAt"
+   //  }
+   let bookID = bookId.trim()
+
+   if (bookID.length == 0) {
 
       missdata = missdata + "bookId"
    }
@@ -39,10 +46,6 @@ const reviewCheck = function (req, res, next) {
       missdata = missdata + " " + "rating"
    }
 
-   if (!reviewedAt) {
-
-      missdata = missdata + " " + "reviewedAt"
-   }
 
    if (missdata) {
 
@@ -51,20 +54,41 @@ const reviewCheck = function (req, res, next) {
       return res.status(400).send({ status: false, message: message })
    }
    // =================rating validation===============================//
-   if (typeof rating != "number" || !ratingCheck(rating))
+   if (typeof rating != "number" )
 
       return res.status(400).send({ status: false, message: "rating is not in a proper format" })
 
+   if(!ratingCheck(rating))   
+       
+      return res.status(400).send({status:false,message:"rating should be between 1 & 5"})
    //==================reviewat validation===========================//
+   if (!reviewedAt) {
+      return res.status(400).send({ status: false, message: "reviewedAt is required" })
+  }
 
 
-   let dateCheck = new Date(reviewedAt).getTime()
 
-   if (isNaN(dateCheck)) {
+      if (!/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/.test(reviewedAt))
 
-      return res.status(400).send({ status: false, message: "reviewAt is not in a proper format " })
+          return res.status(400).send({ status: false, message: "date format should be in YYYY-MM-DD" })
 
-   }
+          
+
+  
+  
+
+   // if (reviewedAt) {
+
+   //    let dateCheck = new Date(reviewedAt).getTime()
+
+   //    console.log(dateCheck)
+
+   //    if (isNaN(dateCheck)) {
+
+   //       return res.status(400).send({ status: false, message: "reviewAt is not in a proper format " })
+
+   //    }
+   // }
    // ===========================review validation=============================================//
    if (review) {
 
@@ -88,25 +112,17 @@ const reviewCheck = function (req, res, next) {
       return res.status(400).send({ status: false, message: "not a valid bookId" })
    }
 
-   if(isDeleted){
-       
-      if(typeof isDeleted!== "boolean"){
-       
-      return res.status(400).send({ status:false,message:"isDeleted should be true or false"})}
+   if (isDeleted) {
+
+      if (typeof isDeleted !== "boolean") {
+
+         return res.status(400).send({ status: false, message: "isDeleted should be true or false" })
+      }
 
    }
-    
+
 
    next()
 }
-
-
-
-
-
-
-
-
-
 
 module.exports = { reviewCheck }
