@@ -72,7 +72,7 @@ const createReview = async function (req, res) {
         if (savedData != false) {
             await bookModel.findOneAndUpdate({ _id: bookId }, { $inc: { reviews: 1 } }, { new: true })
         }
-        checkBook._doc["reviewData"] = savedData 
+        checkBook._doc["reviewsData"] = savedData 
         return res.status(201).send({ status: true, message: "success", data: checkBook })
     } catch (error) {
         console.log(error);
@@ -97,8 +97,12 @@ const updateReview = async function (req, res) {
             return res.status(400).send({ status: false, message: 'review, rating and reviewedBy, Only these update are allowed' });
         }
 
-        if (!(isValidObjectId(bookParamId) || isValidObjectId(reviewId))) {
-            return res.status(400).send({ status: false, message: "please enter valid ObjectId of book and review " })
+        if (!isValidObjectId(bookParamId)) {
+            return res.status(400).send({ status: false, message: "please enter valid bookId" })
+        }
+
+        if (!isValidObjectId(reviewId)) {
+            return res.status(400).send({ status: false, message: "please enter valid reviewId " })
         }
 
         let checkBook = await bookModel.findById(bookParamId)
@@ -111,13 +115,14 @@ const updateReview = async function (req, res) {
         }
 
         let checkReview = await reviewModel.findById(reviewId)
+        if (!checkReview) {
+            return res.status(404).send({ status: false, message: "no such review exists" })
+        }
+        
         if (checkReview.isDeleted == true) {
             return res.status(404).send({ status: false, message: "this review is deleted" })
         }
 
-        if (!checkReview) {
-            return res.status(404).send({ status: false, message: "no such review exists" })
-        }
 
         if (rating < 1 || rating > 5) {
             return res.status(400).send({ status: false, message: "please rate between 1 to 5 only" })
@@ -130,7 +135,7 @@ const updateReview = async function (req, res) {
             return res.status(404).send({ status: false, message: "Cannot update review, Book has been already deleted" })
         }
 
-        checkBook._doc["reviewData"] = updatedReview
+        checkBook._doc["reviewsData"] = updatedReview
         return res.status(200).send({ status: true, msg: "true", data: checkBook });
     } catch (err) {
         res.status(500).send({ status: false, msg: "Error", error: err.message });
