@@ -33,7 +33,7 @@ const createReview = async function (req, res) {
         }
         objReview.bookId = bookId
 
-        if (!isValid(reviewedBy)) {
+        if ( reviewedBy && !isValid(reviewedBy)) {
             return res.status(400).send({ status: false, message: "please give valid input" })
         }
 
