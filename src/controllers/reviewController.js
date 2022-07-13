@@ -6,7 +6,8 @@ const { isValid, isValidObjectId, isValidRequest, removeSpace } = require('../va
 const createReview = async function (req, res) {
 
     try {
-        let { bookId, reviewedBy, reviewedAt, rating, review, isDeleted } = req.body
+        let { bookId, reviewedBy, rating, review, isDeleted } = req.body
+        
         let objReview = {}
 
         let id = req.params.bookId
@@ -42,14 +43,16 @@ const createReview = async function (req, res) {
         }
         objReview.reviewedBy = reviewedBy
 
-        if (!reviewedAt) {
-            return res.status(400).send({ status: false, message: "reviewedAt is missing" })
-        }
+        // if (!reviewedAt) {
+        //     return res.status(400).send({ status: false, message: "reviewedAt is missing" })
+        // }
 
-        if (!isValid(reviewedAt)) {
-            return res.status(400).send({ status: false, message: "please give valid input in reviewedAt" })
-        }
-        objReview.reviewedAt = reviewedAt
+        // if (!isValid(reviewedAt)) {
+        //     return res.status(400).send({ status: false, message: "please give valid input in reviewedAt" })
+        // }
+        // objReview.reviewedAt = reviewedAt
+
+        objReview.reviewedAt = Date.now()
 
         // undefined is because of 0
         if (!rating && rating == undefined) {
@@ -79,6 +82,7 @@ const createReview = async function (req, res) {
         return res.status(500).send({ status: false, message: error.message })
     }
 }
+
 
 const updateReview = async function (req, res) {
     try {
