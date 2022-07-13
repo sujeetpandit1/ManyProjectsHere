@@ -27,9 +27,11 @@ Query param can have any combination of below filters. By userId, By category, B
 
 const booksByQuery = async function(req, res){
     try{
-        const {userId, category, subcategory} = req.query;          
+        const {userId, category, subcategory} = req.query; 
+        
+         if (userId) {if (!isValidObjectId(userId)) {return res.status(400).send({status: false, message: "please enter valid id"})}}
+        
         const filters = {isDeleted:false};
-        if (!isValidObjectId(userId)) {return res.status(400).send({status: false, message: "please enter valid user Id"})}
         if(userId){filters.userId = userId};
 
         if(category){filters.category = category};
