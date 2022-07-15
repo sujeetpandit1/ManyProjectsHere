@@ -26,6 +26,7 @@ function isISBN(x){
 //categroy
 function isCategory(x){ return isExcerpt(x)}
 
+
 //subCategory
 function isSubcategory(x){ 
     if(!Array.isArray(x)) return false;
