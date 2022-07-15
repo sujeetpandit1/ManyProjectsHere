@@ -2,10 +2,13 @@ const bookModel = require("../models/booksModel")
 const reviewModel = require("../models/reviewModel")
 const { isValidRequestBody, isValidObjectId, isValidData } = require("../validator/validation")
 const validator = require('validator')
+const aws =require('../aws/aws')
 
 const createBook = async function (req, res) {
     try {
         const data = req.body;
+        let cover=req.cover //require here feom aws file
+        data.bookCover=cover
         data.title = data.title.trim().split(" ").filter(word => word).join(" ");
         data.excerpt = data.excerpt.trim().split(" ").filter(word => word).join(" ");
         data.reviews = 0
@@ -188,7 +191,7 @@ const updateBook = async function (req, res) {
         }
 
         //updateBook
-        let updatedata = await bookModel.findOneAndUpdate({ _id: id.bookId }, details, { new: true }).select({ __v: 0 });
+        let updatedata = await bookModel.findOneAndUpdate({ _id: bookId }, details, { new: true }).select({ __v: 0 });
 
         res.status(200).send({ status: true, message: 'Success', data: updatedata });
 

@@ -29,7 +29,7 @@ const userLogin = async function (req, res) {
         }
 
          //<<-------generating token --------->>
-        const token = jwt.sign({ userId: getData._id }, "group-25",{expiresIn:'365d'})
+        const token = jwt.sign({ userId: getData._id }, "group-25",{expiresIn:'2d'})
         res.status(200).send({ status: true, data: token })
 
     }

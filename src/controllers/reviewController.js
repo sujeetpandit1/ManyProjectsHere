@@ -29,7 +29,27 @@ const createReview = async function (req, res) {
         res.status(500).send({ status: false, message: error.message })
     }
 }
+// const updateReview = async function (req, res) {
+//     try {
+//         let reviewDetails=req.body
+//         let data = req.body;
+//         if (!isValidRequest(req.body)) {
+//             return res.status(400).send({ status: false, message: "please enter details to update" })
+//         }
+//         let reviewId = req.params.reviewId;
+//         let reviewById = await reviewModel.findOne({_id:reviewId})
+//         if (reviewById.isDeleted == true) {
+//             return res.status(400).send({ status: false, message: "Cannot update review, Book has been already deleted" })
+//             }
+//         let { review, rating, reviewedBy }=reviewDetails
+//         const updatedreview=await reviewModel.findOneAndUpdate({ _id: reviewId },reviewDetails , {new:true})
 
+
+//         return res.status(200).send({ status: true, msg: "success", data: updatedreview });
+//       } catch (err) {
+//         res.status(500).send({ status: false, msg: "Error", error: err.message });
+//       }
+//     };
 const updateReview = async function (req, res) {
 
     try {

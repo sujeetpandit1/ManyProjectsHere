@@ -31,7 +31,7 @@ const bookvalidation = async function (req, res, next) {
         //check if the logged-in user is requesting to modify their own resources 
         if (userId != req.decodedtoken.userId)
             return res.status(403).send({ status: false, msg: 'Author loggedin is not allowed to modify the requested book data' })
-        console.log("Successfully Authorized")
+        //console.log("Successfully Authorized")
 
 
         //<=====Validation=====>        

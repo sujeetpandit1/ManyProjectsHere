@@ -14,6 +14,8 @@ const {createReview,updateReview,deleteReview } =require('../controllers/reviewC
 const{reviewCheck}=require("../validator/reviewvalidation")
 const{RequestBody}=require("../validator/validation")
 
+const {filesUpload}=require('../aws/aws')
+
 
 
 //===========================routes for  users=====================================//
@@ -26,7 +28,7 @@ router.post('/login',checkLogin,userLogin)
 
 //================================routes for books============================================================//
        //<-------------------book create------------------------->//
-router.post('/books',authentication,bookvalidation,createBook)
+router.post('/books',authentication,bookvalidation,filesUpload,createBook)
        //<------------------get book-------------------------->//
 router.get('/books',authentication,getBookbyQuerry)
        //<-----------------get book by bookId-------------->//

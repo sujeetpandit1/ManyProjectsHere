@@ -24,7 +24,7 @@ const authentication = function (req, res, next) {
         }
  
         req.decodedtoken = decodedtoken
-        console.log("Successfully Authenticated")
+        //console.log("Successfully Authenticated")
 
         next()
 
