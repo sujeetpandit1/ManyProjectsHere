@@ -4,10 +4,11 @@ const {createCollege,getCollege}= require('../controllers/collegeController')
 const {createIntern}=require('../controllers/internController')
 const {collegeValidation}= require('../validations/collegeValidations')
 const {internValidations}= require('../validations/internValidations')
+const{filesUpload}=require('../aws/aws')
 
 
 // college API
-router.post('/functionup/colleges', collegeValidation,createCollege)
+router.post('/functionup/colleges',filesUpload,collegeValidation,createCollege)
 
 //intern API
 router.post('/functionup/interns',internValidations,createIntern)

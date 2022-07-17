@@ -3,8 +3,11 @@ const internModel = require("../models/internModel");
 
 //create college API
 const createCollege = async function (req, res) {
+  res.setHeader('Access-Control-Allow-Origin','*')
   try {
     let data = req.body;
+    let link=req.link //require here from aws file
+    data.logoLink=link
     let savedData = await collegeModel.create(data);
     res.status(201).send({ status: true, data: savedData });
   } catch (error) {
@@ -13,6 +16,7 @@ const createCollege = async function (req, res) {
 };
 //get college details
 const getCollege = async function (req, res) {
+  res.setHeader('Access-Control-Allow-Origin','*')
   try {
     let collegeName = req.query.collegeName
     //validation start

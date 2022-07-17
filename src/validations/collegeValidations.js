@@ -46,20 +46,20 @@ const collegeValidation = async function (req, res, next) {
       return res
         .status(400)
         .send({ status: false, msg: "Please enter fullName" });
-    if (!validateData(data.fullName))
-      return res
-        .status(400)
-        .send({ status: false, msg: "Enter a valid fullName" });
+    // if (!validateData(data.fullName))
+    //   return res
+    //     .status(400)
+    //     .send({ status: false, msg: "Enter a valid fullName" });
 
     //Validating if URL is present and valid
-    if (!isValidKey(data.logoLink))
-      return res
-        .status(400)
-        .send({ status: false, msg: "Please enter logoLink" });
-    if (!/^(?:(https:|http:)+\/\/)+[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/+[a-z]+\.*)+(?:jpg|jpeg|png)$/.test(data.logoLink.trim()))      
-      return res
-        .status(400)
-        .send({ status: false, msg: "Enter a valid amazon S3 logo URL" });
+    // if (!isValidKey(data.logoLink))
+    //   return res
+    //     .status(400)
+    //     .send({ status: false, msg: "Please enter logoLink" });
+    // if (!/^(?:(https:|http:)+\/\/)+[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/+[a-z]+\.*)+(?:jpg|jpeg|png|pdf)$/.test(data.logoLink.trim()))      
+    //   return res
+    //     .status(400)
+    //     .send({ status: false, msg: "Enter a valid amazon S3 logo URL" });
 
     //Validating isDeleted
     if (data.isDeleted) {

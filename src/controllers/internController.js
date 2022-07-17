@@ -1,7 +1,10 @@
 const internModel= require("../models/internModel")
 const collegeModel=require('../models/collegeModel')
+
+
 // Creating Intern Document
 const createIntern= async function(req,res){
+    res.setHeader('Access-Control-Allow-Origin','*')
     try{
 
         let data=req.body;
