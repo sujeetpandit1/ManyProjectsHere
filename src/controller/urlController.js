@@ -38,7 +38,7 @@ const getUrl=async function(req,res){
     }
     
 }
-module.exports={ }
+module.exports={ urlShortner,getUrl }
 
 
 
