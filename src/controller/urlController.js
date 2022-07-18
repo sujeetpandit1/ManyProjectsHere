@@ -2,27 +2,15 @@ const urlModel = require('../model/urlModel')
 
 const shortid = require('shortid');
 
-let isValid = function (value) {
-    if (typeof value === "undefined" || value === null) return false
-    if(typeof value === String && value.trim().length === 0) return true
-}
-
 
 const urlShortner = async function (req, res) {
     try {
         let data = req.body
         let { longUrl, ...rest } = data
-        if(Object.keys(data).length === 0) return res.status(400).send({status:false,message:"Req.body is empty"})
-        if(Object.keys(rest).length>0) return res.status(400).send({statuis:false,message:"please provide valid keys"})
         if(!longUrl) return res.status(400).send({statuis:false,message:"longUrl key must be present"})
-        if (isValid(longUrl)) return res.status(400).send({ status: false, message: "This URL is invalid" })
-        
-    // if (!(/(ftp|http|https|FTP|HTTP|HTTPS):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/.test(longUrl.trim())))
-      
-    //   return res
-    //     .status(400)
-    //     .send({ status: false, msg: "Enter a valid amazon S3 logo URL" });
-
+        if(Object.keys(rest).length>0) return res.status(400).send({statuis:false,message:"please provide valid keys"})
+        if (!/^(?:(https:|http:)+\/\/)+[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[.com|.in|.gov.in|.io|.org]{2,5}(\/)+(?!.*\?).*$/.test(longUrl.trim()))
+        return res.status(400).send({ status: false, msg: "Enter a valid URL link" });
         let code = shortid.generate()
         let details = {}
         details.urlCode = code
@@ -50,7 +38,7 @@ const getUrl=async function(req,res){
     }
     
 }
-module.exports={urlShortner,getUrl}
+module.exports={ }
 
 
 
