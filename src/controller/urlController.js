@@ -11,7 +11,7 @@ const urlShortner = async function (req, res) {
         //check if any unwanted key is present or not in body
         if(Object.keys(rest).length>0) return res.status(400).send({statuis:false,message:"please provide valid keys"})
         //check longUrl is valid or not
-        if (!/^(?:(https:|http:)+\/\/)+[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[.com|.in|.gov.in|.io|.org]{2,5}(\/)+(?!.*\?).*$/.test(longUrl.trim()))
+        if (!/^(https:\/\/www\.|http:\/\/www\.|www\.)[a-zA-Z0-9\!-_$]+\.[a-zA-Z]{2,5}(\/)+[A-Za-z0-9\!@#$%&*?=+_.-]+/.test(longUrl.trim()))
         return res.status(400).send({ status: false, msg: "Enter a valid URL link" });
         //create urlcode and shorturl
         let code = shortid.generate()
