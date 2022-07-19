@@ -1,5 +1,4 @@
 const urlModel = require('../model/urlModel')
-
 const shortid = require('shortid');
 
 
@@ -28,18 +27,13 @@ const urlShortner = async function (req, res) {
 const getUrl=async function(req,res){
     try{
         let urlCode=req.params.urlCode
-        console.log(urlCode)
         let findUrlCode= await urlModel.findOne({urlCode:urlCode})
         if(!findUrlCode) return res.status(404).send({status:false, message:"this urlcode is not found in DB"})
-        if(urlCode != findUrlCode.urlCode) return res.status(404).send({status:false, message:"params urlcode and findUrlCode not matched"})
-        return res.status(200).send({status:true,data:`redirected to ` + findUrlCode.longUrl});
+        res.status(302).redirect(findUrlCode.longUrl)
+        
     }catch(error){
         res.status(500).send({status:false, message: error.message})
     }
     
 }
 module.exports={ urlShortner,getUrl }
-
-
-
-
