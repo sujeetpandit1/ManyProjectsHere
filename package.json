@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx nodemon src/index.js"
+    "start": "npm nodemon src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +14,7 @@
     "express": "^4.18.1",
     "mongoose": "^6.4.4",
     "nodemon": "^2.0.19",
+    "redis": "^4.2.0",
     "shortid": "^2.2.16"
   }
 }
