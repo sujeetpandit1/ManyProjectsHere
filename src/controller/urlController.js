@@ -28,46 +28,19 @@ const urlShortner = async function (req, res) {
     }
 }
 
-// const getUrl=async function(req,res){
-//     try{
-//         let urlCode=req.params.urlCode
-//         //find urlCode in Db
-//         let findUrlCode= await urlModel.findOne({urlCode:urlCode})
-//         if(!findUrlCode) return res.status(404).send({status:false, message:"this urlcode is not found in DB"})
-//         res.status(302).redirect(findUrlCode.longUrl)
+const getUrl=async function(req,res){
+    try{
+        let urlCode=req.params.urlCode
+        //find urlCode in Db
+        let findUrlCode= await urlModel.findOne({urlCode:urlCode})
+        if(!findUrlCode) return res.status(404).send({status:false, message:"this urlcode is not found in DB"})
+        res.status(302).redirect(findUrlCode.longUrl)
         
-//     }catch(error){
-//         res.status(500).send({status:false, message: error.message})
-//     }
-    
-// }
-
-const getUrl = async function(req, res) {
-    try {
-        const urlCode = req.params.urlCode
-    
-        let cachedData = await GET_ASYNC(`${urlCode}`)
-        if(cachedData) {
-    
-             let changed = JSON.parse(cachedData)
-            return res.status(302).redirect(changed.longUrl)
-            
-        }
-        const isUrlExist = await urlModel.findOne({ urlCode: urlCode});
-    
-        if (isUrlExist) {
-            
-            if (urlCode !== isUrlExist.urlCode) {
-            return res.status(404).send({ status: false, Message: "No Url Found, Please Check Url Code", });
-            }
-            await SET_ASYNC(`${urlCode}`, JSON.stringify(isUrlExist))
-            return res.status(302).redirect(isUrlExist.longUrl);
-        }
-        return res.status(404).send({ status: false, message: 'This Url is not present in Db' })
-        
-    
-    } catch (error) {
-        res.status(500).send({ status: false, Message: error.message });
+    }catch(error){
+        res.status(500).send({status:false, message: error.message})
     }
-    };
+    
+}
+
+
 module.exports={ urlShortner,getUrl }
