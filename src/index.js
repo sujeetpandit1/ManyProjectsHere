@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const redis=require('redis')
+const redis = require('redis')
 const route = require('./routes/route')
 
 app.use(express.json());
