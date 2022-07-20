@@ -46,9 +46,23 @@ const urlShortner = async function (req, res) {
         details.urlCode = code
         details.longUrl = longUrl
         details.shortUrl = `http://localhost:3000/${code}`
+        if(details){
+            let cacheData=details
+            let cashUrl = await GET_ASYNC(`${cacheData}`)
+            res.status(200).send({status: true, data: selectUrl})
+        }
+        else{
         const createNewUrl = await urlModel.create(details)
         let selectUrl = await urlModel.findOne(details).select({ urlCode: 1, longUrl: 1, shortUrl: 1, _id: 0 })
         res.status(201).send({ status: true, data: selectUrl })
+        }
+        let cacheData=selectUrl
+    
+        await SET_ASYNC(`${cacheData}`, JSON.stringify(cacheData))
+        //if(!findUrlCode) return res.status(404).send({status:false, message:"this urlcode is not found in DB"}
+    
+       
+
     } catch (error) {
         res.status(500).send({ status: false, message: error.message })
 
