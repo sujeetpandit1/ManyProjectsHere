@@ -1,7 +1,7 @@
 const express= require('express');
 const router= express.Router();
 const {urlShortner,getUrl}=require('../controller/urlController')
-const {client}=require('../redis/redis')
+
 
 
 
