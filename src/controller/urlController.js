@@ -1,5 +1,6 @@
 const urlModel = require('../model/urlModel')
 const shortid = require('shortid');
+//const validator= require("validator")
 const redis = require("redis");
 
 const { promisify } = require("util");
@@ -38,31 +39,43 @@ const urlShortner = async function (req, res) {
         //check if any unwanted key is present or not in body
         if(Object.keys(rest).length>0) return res.status(400).send({statuis:false,message:"please provide valid keys"})
         //check longUrl is valid or not
-        if (!/^(https:\/\/www\.|http:\/\/www\.|www\.)[a-zA-Z0-9\!-_$]+\.[a-zA-Z]{2,5}(\/)+[A-Za-z0-9\!@#$%&*?=+_.-]+/.test(longUrl.trim()))
-        return res.status(400).send({ status: false, msg: "Enter a valid URL link" });
+         if (!/^(https:\/\/|http:\/\/)[a-zA-Z]+\.[a-zA-Z0-9\!-$]+\.[a-zA-Z]{2,5}(\/)+[A-Za-z0-9\!@#$%&*?=+.-]+/.test(longUrl.trim()))
+         return res.status(400).send({ status: false, msg: "Enter a valid URL link" });
+        //if(!validator.isURL(longUrl)) return res.status(400).send({ status: false, msg: "Enter a valid URL link" });
         //create urlcode and shorturl
+        let getData = await GET_ASYNC(`${longUrl}`)
+        let result = JSON.parse(getData)
+        if(result){
+            const data = {
+                "urlCode": result.urlCode,
+                "longUrl": result.longUrl,
+                "shortUrl": result.shortUrl
+            }
+            return res.status(200).send({ status: true, data: data })
+        }else{
+            const foundUrl = await urlModel.findOne({ longUrl })
+            if (foundUrl) {
+                const data = {
+                    "urlCode": foundUrl.urlCode,
+                    "longUrl": foundUrl.longUrl,
+                    "shortUrl": foundUrl.shortUrl
+                }
+                await SET_ASYNC(`${longUrl}`, JSON.stringify(foundUrl))
+                return res.status(200).send({ status: true, data: data })
+            }
+        }
         let code = shortid.generate()
         let details = {}
         details.urlCode = code
         details.longUrl = longUrl
         details.shortUrl = `http://localhost:3000/${code}`
-        if(details){
-            let cacheData=details
-            let cashUrl = await GET_ASYNC(`${cacheData}`)
-            res.status(200).send({})
-        }
-        else{
         const createNewUrl = await urlModel.create(details)
-        let selectUrl = await urlModel.findOne(details).select({ urlCode: 1, longUrl: 1, shortUrl: 1, _id: 0 })
-        res.status(201).send({ status: true, data: selectUrl })
+        let selectUrl = {
+            "urlCode" : createNewUrl.urlCode,
+            "longUrl" : createNewUrl.longUrl,
+            "shortUrl" : createNewUrl.shortUrl
         }
-        let cacheData=selectUrl
-    
-        await SET_ASYNC(`${cacheData}`, JSON.stringify(cacheData))
-        //if(!findUrlCode) return res.status(404).send({status:false, message:"this urlcode is not found in DB"}
-    
-       
-
+        res.status(201).send({ status: true, data: selectUrl })
     } catch (error) {
         res.status(500).send({ status: false, message: error.message })
 
