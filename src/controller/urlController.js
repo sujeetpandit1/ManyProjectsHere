@@ -25,8 +25,8 @@ redisClient.on("connect", async function () {
 
 //Connection setup for redis
 
-const SET_ASYNC = promisify(redisClient.SET).bind(redisClient);
-const GET_ASYNC = promisify(redisClient.GET).bind(redisClient);
+const SET_ASYNC = promisify(redisClient.SET).bind(redisClient); //data has been created , as well as fect will set to the casching
+const GET_ASYNC = promisify(redisClient.GET).bind(redisClient); // avoiding db call to get te output in a fast way.
 
 
 const urlShortner = async function (req, res) {
@@ -38,11 +38,11 @@ const urlShortner = async function (req, res) {
         //check if any unwanted key is present or not in body
         if(Object.keys(rest).length>0) return res.status(400).send({statuis:false,message:"please provide valid keys"})
         //check longUrl is valid or not
-        if (!/^(https:\/\/www\.|https:\/\/app\.|http:\/\/www\.|www\.)[a-zA-Z0-9\!-_$]+\.[a-zA-Z]{2,5}(\/)+[A-Za-z0-9\!@#$%&*?=+_.-]+/.test(longUrl.trim()))
+        if (!/^(https:\/\/|http:\/\/)[a-zA-Z]+\.[a-zA-Z0-9\!-_$]+\.[a-zA-Z]{2,5}(\/)+[A-Za-z0-9\!@#$%&*?=+_.-]+/.test(longUrl.trim()))
         return res.status(400).send({ status: false, msg: "Enter a valid URL link" });
         //create urlcode and shorturl
         let getData = await GET_ASYNC(`${longUrl}`)
-        let result = JSON.parse(getData)
+        let result = JSON.parse(getData)    
         if(result){
             const data = {
                 "urlCode": result.urlCode,
