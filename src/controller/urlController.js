@@ -81,12 +81,12 @@ const getUrl = async function (req, res) {
     try {
         let urlCode = req.params.urlCode
         if (!shortid.isValid(urlCode)) return res.status(400).send({ status: false, message: "invalid urlCode"})
-        let cashUrl = await GET_ASYNC(`${urlCode}`)
-        if (cashUrl) return res.status(302).redirect(cashUrl) 
+        let cashUrl = await GET_ASYNC(`${urlCode}`) //get url from cache memory 
+        if (cashUrl) return res.status(302).redirect(cashUrl) //cache hit
         else {
-            let findUrlCode = await urlModel.findOne({ urlCode: urlCode }).select({ urlCode: 0, _id: 0 });
+            let findUrlCode = await urlModel.findOne({ urlCode: urlCode }).select({ urlCode: 0, _id: 0 }); // db call
             if (!findUrlCode) return res.status(404).send({ status: false, message: "this urlcode is not found in DB" })
-            await SET_ASYNC(`${urlCode}`, findUrlCode.longUrl)
+            await SET_ASYNC(`${urlCode}`, findUrlCode.longUrl) //cache miss
             return res.status(302).redirect(findUrlCode.longUrl)
         } 
     
