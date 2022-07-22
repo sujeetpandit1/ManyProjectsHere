@@ -76,23 +76,20 @@ const urlShortner = async function (req, res) {
 
     }
 }
+
 const getUrl = async function (req, res) {
     try {
         let urlCode = req.params.urlCode
+        if (!shortid.isValid(urlCode)) return res.status(400).send({ status: false, message: "invalid urlCode"})
         let cashUrl = await GET_ASYNC(`${urlCode}`)
-        let data = JSON.parse(cashUrl)
-        console.log(data)
-        if (cashUrl) {
-            return res.status(302).redirect(data.longUrl)
-        }else {
+        if (cashUrl) return res.status(302).redirect(cashUrl) 
+        else {
             let findUrlCode = await urlModel.findOne({ urlCode: urlCode }).select({ urlCode: 0, _id: 0 });
-            if(findUrlCode){
-            await SET_ASYNC(`${urlCode}`, JSON.stringify(findUrlCode))
-            }else{
-            return res.status(404).send({ status: false, message: "this urlcode is not found in DB" })
-            }
-            res.status(302).redirect(findUrlCode.longUrl)
-        }
+            if (!findUrlCode) return res.status(404).send({ status: false, message: "this urlcode is not found in DB" })
+            await SET_ASYNC(`${urlCode}`, findUrlCode.longUrl)
+            return res.status(302).redirect(findUrlCode.longUrl)
+        } 
+    
 
     } catch (error) {
         res.status(500).send({ status: false, message: error.message })
