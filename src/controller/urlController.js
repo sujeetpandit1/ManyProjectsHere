@@ -1,6 +1,6 @@
 const urlModel = require('../model/urlModel')
 const shortid = require('shortid');
-//const validator= require("validator")
+
 //Redis is an open source (BSD licensed), in-memory data structure store, used as a database, cache, and message broker
 
 const redis = require("redis");
@@ -10,7 +10,7 @@ const { promisify } = require("util");
 //Connect to redis
 const redisClient = redis.createClient(
     13800,
-    "redis-13800.c264.ap-south-1-1.ec2.cloud.redislabs.com", // publuc end point
+    "redis-13800.c264.ap-south-1-1.ec2.cloud.redislabs.com", // public end point
     { no_ready_check: true }
 );
 redisClient.auth("Vtbolgcq4b2IlvwksBW5lYBVnei8JVeP", function (err) {
@@ -66,7 +66,7 @@ const urlShortner = async function (req, res) {
                 "longUrl": createNewUrl.longUrl,
                 "shortUrl": createNewUrl.shortUrl
             }
-            await SET_ASYNC(`${longUrl}`, JSON.stringify(selectUrl)) // convert object to string
+            await SET_ASYNC(`${longUrl}`, JSON.stringify(selectUrl)) // set to resdis
             res.status(201).send({ status: true, data: selectUrl }) // db response or cache res  
         }
 
