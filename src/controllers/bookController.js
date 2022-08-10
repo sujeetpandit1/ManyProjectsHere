@@ -7,7 +7,7 @@ const aws =require('../aws/aws')
 const createBook = async function (req, res) {
     try {
         const data = req.body;
-        let cover=req.cover //require here feom aws file
+        let cover=req.cover //require here from aws file
         data.bookCover=cover
         data.title = data.title.trim().split(" ").filter(word => word).join(" ");
         data.excerpt = data.excerpt.trim().split(" ").filter(word => word).join(" ");
