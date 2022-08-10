@@ -33,9 +33,6 @@ router.post('/users/:userId/orders',authentication,authorisation, createOrder)
 router.put("/users/:userId/orders",authentication,authorisation,updateOrder)
 
 
-
-router.post("/users/:userId/orders",createOrder)
-
 router.all('/**',function(req,res){
     res.status(404).send({status:false,message:'the api you request, Is not found'})
 })
