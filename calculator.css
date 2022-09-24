@@ -1,0 +1,120 @@
+* {border: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+.description {
+	margin: 20px 20px 40px 20px;
+	font-family: 'Vollkorn SC', serif;
+	font-weight: bold;
+	font-size: 30px;
+	color: #1c2127e8;
+	background-color: #81c533c2;
+}
+.none {
+    display: none;
+}
+.display {
+    font-size: 40px;
+    font-family: 'Orbitron', sans-serif;
+}
+.calculator {
+    height: 65%;
+    width: 20%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    border: 4px solid rgba(0, 0, 0, 0.794);
+    box-shadow: inset 0 0 6px 0px rgba(12, 12, 12, 0.781);
+    margin: 10px;
+    padding: 15px;
+    background-color: rgba(20, 86, 184, 0.74);
+}
+.screen {
+    display: flex;
+    align-items: center;
+    align-self: center;
+    border-radius: 10px;
+    overflow-x: auto;
+    flex-direction: row-reverse;
+    white-space: nowrap;
+    height: 4em;
+    width: 100%;
+    border: 2px solid #000000a3;
+    background-color: rgba(19, 30, 22, 0.81);
+    box-shadow: inset 0px 0px 12px 0px rgba(0, 0, 0, 0.47);
+}
+.lit {
+    background-color: rgba(225, 225, 225, 0.801);
+}
+.on-off-section {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-top: 20px;
+    text-transform: uppercase;
+    justify-content: space-between;
+}
+.button-section {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+.button-display-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 15px 0;
+}
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35px;
+    width: 55px;
+    font-size: 25px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.801);
+}
+
+@media screen and (max-width: 479px) {
+    .calculator {
+        padding: 10px;
+        height: 60%;
+        width: 81%;
+    }
+}
+
+@media screen and (min-width: 480px) and (max-width: 767px) {
+    .calculator {
+        padding: 10px;
+        height: 60%;
+        width: 56%;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .calculator {
+        padding: 10px;
+        height: 60%;
+        width: 33%;
+    }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1300px) {
+    .calculator {
+        padding: 10px;
+        height: 60%;
+        width: 26%;
+    }
+}
+
+
+
+
