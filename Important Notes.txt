@@ -1,0 +1,2 @@
+1. DataBase cluster need to be connected.
+2. Virtual Populate concept was not clear
