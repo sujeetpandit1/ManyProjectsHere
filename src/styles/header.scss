@@ -1,0 +1,66 @@
+nav{
+    width: 100%;
+    height: 100px;
+    background-color:rgb(119, 13, 13);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 $p;
+    position: sticky;
+    top: 0%;
+    z-index: 60;
+
+    > h2{
+    color: aliceblue;
+    font-size: 2rem;
+    &:hover{
+        transition: ease-out;
+        color: rgb(222, 208, 83);
+    }
+    }
+    > div{
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    }
+    a{
+        color: $color3;
+        font-weight: 500;
+        transition: all 0.3s;
+        letter-spacing: 1px;
+        &:hover{
+            transition: ease-out;
+            color: rgb(245, 243, 239);
+        }
+    }
+
+}
+
+//email effect
+a > button{
+    background: rgb(55, 46, 46);
+    font-size: 15px;
+    color:rgb(249, 249, 249);
+    border-radius: 7px;
+    box-shadow: 0 7px 0px #010609;
+    display: inline-block;
+    transition: all 0.2s;
+    position: relative;
+    padding: 7px 10px;
+    position: relative;
+    top: 0;
+    cursor: pointer; 
+    border: 1px solid rgb(224, 134, 15);
+    background-color: $color7;
+    font-weight: 600;
+    font-family: sans-serif;
+    
+    letter-spacing: 1px;
+    &:hover{
+        background-color: $color5;
+        color: rgb(196, 181, 161);
+        transition:ease-in-out
+        }
+
+        
+}

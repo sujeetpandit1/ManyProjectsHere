@@ -1,0 +1,29 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,500;0,800;1,300;1,400;1,500;1,800&family=Roboto:ital,wght@0,400;1,500&display=swap');
+
+@import "statics";
+@import "header";
+@import "home";
+@import "animation";
+
+*{
+    margin: 0%;
+    padding: 0%;
+    font-family: $text2;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+a{
+text-decoration: none;
+}
+
+body{
+    background-color: rgb(104, 115, 115);
+    overflow-x: hidden;
+}
+
+.disableBtn{
+    background-color: aliceblue;
+    cursor: not-allowed;
+}
